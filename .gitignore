@@ -11,3 +11,6 @@ backend/.mongo/
 # Downloaded docs (may contain filled-in keys)
 *.docx
 *.pdf
+
+# Deploy access keys (local only, never commit)
+.deploy-keys
