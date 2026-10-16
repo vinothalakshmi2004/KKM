@@ -1,0 +1,446 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* ---- Brand palette (from the public website). Space-separated RGB so Tailwind can add opacity. ---- */
+    --night: 11 19 36;          /* #0b1324  navy: navbar, footer, dark surfaces */
+    --night-800: 17 27 48;      /* #111b30 */
+    --night-700: 26 38 64;      /* #1a2640 */
+    --cream: 250 247 241;       /* #faf7f1  page background */
+    --cream-100: 243 237 226;   /* #f3ede2  soft surface / borders */
+    --gold: 201 164 92;         /* #c9a45c  accent, CTA */
+    --gold-600: 176 138 66;     /* #b08a42 */
+    --gold-300: 227 203 147;    /* #e3cb93  accent on dark */
+    --ink: 17 24 39;            /* #111827  heading / body text */
+    --ink-soft: 55 65 81;       /* #374151  secondary text */
+
+    /* ---- Admin scales derived from the palette (AA-checked) ---- */
+    --brand-50: 251 248 241;  --brand-100: 246 238 219; --brand-200: 237 220 180; --brand-300: 227 203 147;
+    --brand-400: 214 182 118; --brand-500: 201 164 92;  --brand-600: 138 106 44;  --brand-700: 115 88 31;
+    --brand-800: 92 70 25;    --brand-900: 63 49 18;    --brand-950: 36 28 10;
+    --ink-50: 250 247 241;    --ink-100: 243 237 226;   --ink-200: 230 224 212;   --ink-300: 214 211 204;
+    --ink-400: 139 147 163;   --ink-500: 92 101 119;    --ink-600: 55 65 81;      --ink-700: 38 52 83;
+    --ink-800: 17 27 48;      --ink-900: 11 19 36;      --ink-950: 7 13 25;
+
+    /* Legacy semantic vars used by layouts */
+    --color-primary: var(--brand-600);
+    --color-primary-dark: var(--brand-700);
+    --color-primary-light: var(--brand-200);
+    --color-bg: var(--cream);
+    --color-surface: 255 255 255;
+    --color-text: var(--ink);
+    --color-muted: var(--ink-600);
+    --color-border: var(--ink-200);
+    --color-error: 185 28 28;
+    --color-success: 4 120 87;
+    --color-warning: 180 83 9;
+  }
+
+  .dark {
+    --color-bg: var(--night);
+    --color-surface: var(--night-800);
+    --color-text: 255 255 255;
+    --color-muted: 232 237 245;
+    --color-border: var(--ink-700);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-ink-200 dark:border-ink-700;
+  }
+  
+  body {
+    @apply bg-[rgb(var(--color-bg))] text-[rgb(var(--color-text))] font-sans antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-brand-600 text-white rounded-lg font-medium text-sm transition-all duration-200 hover:bg-brand-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100 shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-ink-100 dark:bg-ink-700 text-ink-700 dark:text-ink-200 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-ink-200 dark:hover:bg-ink-600 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 bg-red-700 text-white rounded-lg font-medium text-sm transition-all duration-200 hover:bg-red-800 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-ink-600 dark:text-ink-300 rounded-lg font-medium text-sm transition-all duration-200 hover:bg-ink-100 dark:hover:bg-ink-700 active:scale-95;
+  }
+
+  .card {
+    @apply bg-white dark:bg-ink-800 rounded-2xl shadow-sm border border-ink-100 dark:border-ink-700 p-5;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 rounded-lg border border-ink-300 dark:border-ink-600 bg-white dark:bg-ink-700 text-ink-900 dark:text-ink-100 placeholder-ink-400 dark:placeholder-ink-500 text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Native <option> elements don't inherit Tailwind dark-mode classes —
+     force readable colours in both themes. */
+  select.input option,
+  select option {
+    background-color: #ffffff;
+    color: #111827;
+  }
+  .dark select.input option,
+  .dark select option {
+    background-color: rgb(38 52 83); /* ink-700 */
+    color: #f1f5f9;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-ink-700 dark:text-ink-300 mb-1;
+  }
+
+  .form-error {
+    @apply text-xs text-red-500 mt-1;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-green {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400;
+  }
+
+  .badge-red {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400;
+  }
+
+  .badge-yellow {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400;
+  }
+
+  .badge-blue {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400;
+  }
+
+  .badge-slate {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-ink-100 dark:bg-ink-700 text-ink-600 dark:text-ink-400;
+  }
+
+  .skeleton {
+    @apply animate-pulse bg-ink-200 dark:bg-ink-700 rounded;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer;
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer bg-brand-50 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400;
+  }
+
+  .sidebar-link-inactive {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer text-ink-600 dark:text-ink-400 hover:bg-ink-100 dark:hover:bg-ink-700/50 hover:text-ink-900 dark:hover:text-ink-100;
+  }
+
+  .stat-card {
+    @apply bg-white dark:bg-ink-800 rounded-2xl shadow-sm border border-ink-100 dark:border-ink-700 p-5 flex flex-col gap-1;
+  }
+
+  .table-container {
+    @apply w-full overflow-x-auto rounded-xl border border-ink-200 dark:border-ink-700;
+  }
+
+  .table {
+    @apply w-full text-sm;
+  }
+
+  .table th {
+    @apply px-4 py-3 text-left text-xs font-semibold text-ink-500 dark:text-ink-400 uppercase tracking-wider bg-ink-50 dark:bg-ink-700/50;
+  }
+
+  .table td {
+    @apply px-4 py-3 text-ink-700 dark:text-ink-300 border-t border-ink-100 dark:border-ink-700;
+  }
+
+  .table tr:hover td {
+    @apply bg-ink-50 dark:bg-ink-700/30;
+  }
+
+  .page-header {
+    @apply flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6;
+  }
+
+  .section-title {
+    @apply text-xl font-bold text-ink-900 dark:text-white;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-ink-900 dark:text-white;
+  }
+}
+
+/* No rubber-band bounce anywhere (landing, login, booking pages): scrolling stops cleanly at the ends */
+html, body { overscroll-behavior: none; }
+
+/* Admin pages: the frame never scrolls; the content area scrolls by itself */
+html.admin-shell, html.admin-shell body { height: 100%; overflow: hidden; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { @apply bg-ink-300 dark:bg-ink-600 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-ink-400 dark:bg-ink-500; }
+
+/* Print: hide app chrome and actions, keep the content */
+@media print {
+  .no-print { display: none !important; }
+  html, body, main, .h-screen { height: auto !important; overflow: visible !important; background: #fff !important; }
+  .card { box-shadow: none !important; break-inside: avoid; }
+}
+
+/* Animations */
+/* Ends at transform: none. A lingering transform (even translateY(0)) would make this element the
+   containing block for position: fixed children, trapping popups inside the page instead of the screen. */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.animate-fade-in { animation: fadeIn 0.3s ease-out both; }
+
+@keyframes modalIn { from { opacity: 0; transform: translateY(12px) scale(0.98); } to { opacity: 1; transform: none; } }
+.animate-modal-in { animation: modalIn 0.18s ease-out both; }
+
+@keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+.animate-slide-in { animation: slideIn 0.25s ease-out forwards; }
+
+/* ------------------------------------------------------------------------------------------------
+   Dark mode: bright, high-contrast text.
+   Primary text is pure white, secondary text near-white, accents and statuses use the lighter
+   (300) shades that read well on the navy surfaces. Overrides both plain and dark: variants.
+------------------------------------------------------------------------------------------------- */
+.dark { color-scheme: dark; }
+
+/* Primary text: headings, names, values */
+.dark .text-ink-900, .dark .text-ink-800, .dark .text-ink-700, .dark .text-ink-600,
+.dark .dark\:text-white, .dark .dark\:text-ink-100, .dark .dark\:text-ink-200,
+.dark .text-ink-200, .dark .text-ink-300 { color: #ffffff !important; }
+
+/* Secondary text: addresses, phones, hints, table headers (near-white, not grey) */
+.dark .text-ink-500, .dark .text-ink-400,
+.dark .dark\:text-ink-300, .dark .dark\:text-ink-400, .dark .dark\:text-ink-500 { color: #e8edf5 !important; }
+
+/* Form labels and table headers */
+.dark .label { color: #ffffff !important; }
+.dark .table th { color: #e8edf5 !important; }
+.dark .table td { color: #ffffff !important; }
+
+/* Placeholders stay a touch dimmer so empty fields look empty */
+.dark .input::placeholder { color: #a7b4c8 !important; }
+.dark .input { color: #ffffff !important; }
+
+/* Accent (brand gold) */
+.dark .text-brand-400, .dark .text-brand-500, .dark .text-brand-600,
+.dark .dark\:text-brand-300, .dark .dark\:text-brand-400 { color: rgb(var(--gold-300)) !important; }
+.dark .text-brand-700, .dark .text-brand-800, .dark .dark\:text-brand-200 { color: rgb(var(--brand-200)) !important; }
+
+/* Status colours: lighter shades for contrast */
+.dark .text-emerald-500, .dark .text-emerald-600, .dark .dark\:text-emerald-400 { color: #6ee7b7 !important; }
+.dark .text-red-400, .dark .text-red-500, .dark .dark\:text-red-400 { color: #fca5a5 !important; }
+.dark .text-amber-600, .dark .dark\:text-amber-400 { color: #fcd34d !important; }
+.dark .text-blue-600, .dark .dark\:text-blue-400 { color: #93c5fd !important; }
+
+/* Badges: brighter text on slightly stronger tints */
+.dark .badge-green { background-color: rgba(16, 185, 129, 0.22) !important; color: #6ee7b7 !important; }
+.dark .badge-red { background-color: rgba(239, 68, 68, 0.22) !important; color: #fca5a5 !important; }
+.dark .badge-yellow { background-color: rgba(245, 158, 11, 0.22) !important; color: #fcd34d !important; }
+.dark .badge-blue { background-color: rgba(59, 130, 246, 0.25) !important; color: #bfdbfe !important; }
+.dark .badge-slate { background-color: rgb(var(--ink-400) / 0.22) !important; color: #ffffff !important; }
+
+/* Sidebar */
+.dark .sidebar-link-inactive { color: #e8edf5 !important; }
+.dark .sidebar-link-active { color: rgb(var(--gold-300)) !important; }
+
+/* Text sitting on solid brand / red buttons and chips must stay white */
+.dark .bg-brand-600 .text-white, .dark .bg-brand-600.text-white,
+.dark .btn-primary, .dark .btn-danger { color: #ffffff !important; }
+
+/* Logout keeps its warning colour */
+.dark .sidebar-link-inactive.text-red-500 { color: #fca5a5 !important; }
+
+/* ------------------------------------------------------------------------------------------------
+   Light mode: black, high-contrast text and clearly outlined boxes (no washed-out greys).
+   Scoped to html:not(.dark) so the dark theme above is unaffected.
+------------------------------------------------------------------------------------------------- */
+html:not(.dark) body { color: #000000; }
+
+/* Primary text: headings, names, values, labels */
+html:not(.dark) .text-ink-900, html:not(.dark) .text-ink-800,
+html:not(.dark) .text-ink-700, html:not(.dark) .text-ink-600 { color: #000000 !important; }
+
+/* Secondary text: phones, addresses, hints, table headers (near-black) */
+html:not(.dark) .text-ink-500, html:not(.dark) .text-ink-400 { color: #1f2937 !important; }
+
+html:not(.dark) .label { color: #000000 !important; font-weight: 600; }
+html:not(.dark) .table th { color: rgb(var(--ink)) !important; background-color: rgb(var(--cream-100)) !important; }
+html:not(.dark) .table td { color: #000000 !important; border-color: rgb(var(--ink-200)) !important; }
+html:not(.dark) .table-container { border-color: rgb(var(--ink-300)) !important; }
+
+/* Text boxes: black text, visible borders, readable placeholders */
+html:not(.dark) .input { color: #000000 !important; border-color: rgb(var(--ink-400)) !important; }
+html:not(.dark) .input::placeholder { color: #4b5563 !important; }
+html:not(.dark) .input:focus { border-color: transparent !important; }
+
+/* Cards and panels: defined edges */
+html:not(.dark) .card { border-color: rgb(var(--ink-200)) !important; box-shadow: 0 1px 3px rgb(var(--night) / 0.08); }
+
+/* Sidebar / top bar */
+html:not(.dark) .sidebar-link-inactive { color: #000000 !important; }
+html:not(.dark) .sidebar-link-active { color: rgb(var(--brand-700)) !important; font-weight: 600; }
+html:not(.dark) .sidebar-link-inactive.text-red-500 { color: #b91c1c !important; }
+
+/* Accent and statuses: deeper shades so nothing looks faded */
+html:not(.dark) .text-brand-400, html:not(.dark) .text-brand-500, html:not(.dark) .text-brand-600 { color: rgb(var(--brand-600)) !important; }
+html:not(.dark) .text-brand-700, html:not(.dark) .text-brand-800 { color: rgb(var(--brand-700)) !important; }
+html:not(.dark) .text-emerald-500, html:not(.dark) .text-emerald-600 { color: #047857 !important; }
+html:not(.dark) .text-red-400, html:not(.dark) .text-red-500 { color: #b91c1c !important; }
+html:not(.dark) .text-amber-600 { color: #b45309 !important; }
+html:not(.dark) .text-blue-600 { color: #1d4ed8 !important; }
+
+html:not(.dark) .badge-green { background-color: #d1fae5 !important; color: #065f46 !important; }
+html:not(.dark) .badge-red { background-color: #fee2e2 !important; color: #991b1b !important; }
+html:not(.dark) .badge-yellow { background-color: #fef3c7 !important; color: #92400e !important; }
+html:not(.dark) .badge-blue { background-color: #dbeafe !important; color: #1e40af !important; }
+html:not(.dark) .badge-slate { background-color: #ece6da !important; color: rgb(var(--ink)) !important; }
+
+/* Text on solid buttons / brand chips stays white */
+html:not(.dark) .btn-primary, html:not(.dark) .btn-danger,
+html:not(.dark) .bg-brand-600.text-white, html:not(.dark) .bg-brand-600 .text-white { color: #ffffff !important; }
+html:not(.dark) .btn-secondary { color: #000000 !important; }
+
+/* Pages with an always-dark background (landing, login): bright text in both themes.
+   Three-class selectors beat the two-class light-mode rules above. */
+html .dark-surface .text-ink-400, html .dark-surface .text-ink-500 { color: #e2e8f0 !important; }
+html .dark-surface .text-ink-300, html .dark-surface .text-ink-200 { color: #ffffff !important; }
+html:not(.dark) .dark-surface .input { color: #ffffff !important; border-color: rgba(255, 255, 255, 0.25) !important; }
+html:not(.dark) .dark-surface .input::placeholder { color: #cbd5e1 !important; }
+html:not(.dark) .dark-surface .label { color: #ffffff !important; }
+
+/* ------------------------------------------------------------------------------------------------
+   Public website (landing + hotel pages)
+------------------------------------------------------------------------------------------------- */
+.site { background: rgb(var(--cream)); color: rgb(var(--ink)); }
+.site-section { scroll-margin-top: 5.5rem; } /* sticky navbar never covers headings */
+
+/* Scroll reveal (useReveal adds .is-visible). Ends at transform: none so fixed children aren't trapped. */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.is-visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+.site-field {
+  width: 100%; border-radius: 0.75rem; border: 1px solid rgb(var(--ink-300)); background: #ffffff; color: rgb(var(--ink));
+  padding: 0.7rem 0.9rem; font-size: 0.95rem; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.site-field::placeholder { color: #6b7280; }
+.site-field:focus { border-color: rgb(var(--gold)); box-shadow: 0 0 0 3px rgb(var(--gold) / 0.25); }
+.site-label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4b5563; margin-bottom: 0.35rem; }
+
+.btn-gold {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  background: rgb(var(--gold)); color: rgb(var(--night)); font-weight: 600; border-radius: 9999px; padding: 0.75rem 1.5rem;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 8px 24px -10px rgb(var(--gold) / 0.8);
+}
+.btn-gold:hover { background: #d8b977; transform: translateY(-1px); }
+.btn-gold:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-ghost-light {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.45); color: #ffffff; border-radius: 9999px; padding: 0.75rem 1.5rem;
+  font-weight: 500; transition: background 0.2s, border-color 0.2s;
+}
+.btn-ghost-light:hover { background: rgba(255, 255, 255, 0.12); border-color: #ffffff; }
+.btn-outline-ink {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  border: 1px solid rgb(var(--ink)); color: rgb(var(--ink)); border-radius: 9999px; padding: 0.65rem 1.25rem; font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline-ink:hover { background: rgb(var(--ink)); color: #ffffff; }
+.img-zoom { transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.group:hover .img-zoom { transform: scale(1.06); }
+
+/* ------------------------------------------------------------------------------------------------
+   Bookings calendar (colours come from existing tokens / badge classes)
+------------------------------------------------------------------------------------------------- */
+.cal-hatch { background-image: repeating-linear-gradient(135deg, rgb(var(--ink-400) / 0.30) 0 6px, transparent 6px 12px); }
+.cal-striped { background-image: repeating-linear-gradient(135deg, rgb(255 255 255 / 0.55) 0 5px, transparent 5px 10px); }
+.dark .cal-striped { background-image: repeating-linear-gradient(135deg, rgb(0 0 0 / 0.35) 0 5px, transparent 5px 10px); }
+
+/* ------------------------------------------------------------------------------------------------
+   Guest booking pages: status badges sit on white cards in both themes, so keep their light colours
+------------------------------------------------------------------------------------------------- */
+html .site .badge-green { background-color: #d1fae5 !important; color: #065f46 !important; }
+html .site .badge-red { background-color: #fee2e2 !important; color: #991b1b !important; }
+html .site .badge-blue { background-color: #dbeafe !important; color: #1e40af !important; }
+html .site .badge-slate { background-color: #ece6da !important; color: rgb(var(--ink)) !important; }
+
+/* ------------------------------------------------------------------------------------------------
+   Admin dropdowns: same look as the hotel switcher in the top bar (gold border, gold tint, gold text,
+   gold arrow). The switcher itself (appearance-none, own arrow icon) is left as it is.
+------------------------------------------------------------------------------------------------- */
+select.input:not(.appearance-none) {
+  appearance: none;
+  -webkit-appearance: none;
+  font-weight: 600;
+  padding-right: 2.25rem;
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1rem 1rem;
+  cursor: pointer;
+}
+html:not(.dark) select.input:not(.appearance-none) {
+  background-color: rgb(var(--brand-50)) !important;
+  border-color: rgb(var(--brand-400)) !important;
+  color: rgb(var(--brand-700)) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a6a2c' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+.dark select.input:not(.appearance-none) {
+  background-color: rgb(var(--brand-900) / 0.2) !important;
+  border-color: rgb(var(--brand-600)) !important;
+  color: rgb(var(--brand-200)) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e3cb93' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+select.input:not(.appearance-none):focus { border-color: transparent !important; }
+/* Opened list, browsers without styleable pickers: plain and readable */
+html:not(.dark) select.input option { background: #ffffff; color: #000000; }
+.dark select.input option { background: rgb(var(--ink-800)); color: #ffffff; }
+
+/* Opened list, Chrome / Edge 135+: same navy + gold as the closed dropdown */
+@supports (appearance: base-select) {
+  select.input, select.input:not(.appearance-none), select.input::picker(select) { appearance: base-select; }
+  select.input::picker-icon { display: none; } /* our own gold arrow is used */
+  select.input::picker(select) {
+    margin-top: 4px; padding: 4px; border-radius: 0.75rem;
+    border: 1px solid rgb(var(--brand-400));
+    background: #ffffff;
+    box-shadow: 0 12px 32px -8px rgb(var(--night) / 0.35);
+    max-height: 18rem;
+  }
+  .dark select.input::picker(select) { background: rgb(var(--night-800)); border-color: rgb(var(--brand-600)); }
+  select.input option {
+    padding: 0.55rem 0.75rem; border-radius: 0.5rem; font-weight: 600; cursor: pointer;
+    background: transparent !important; color: rgb(var(--brand-700)) !important;
+  }
+  .dark select.input option { color: rgb(var(--gold-300)) !important; }
+  select.input option:hover, select.input option:focus-visible { background: rgb(var(--brand-50)) !important; outline: none; }
+  .dark select.input option:hover, .dark select.input option:focus-visible { background: rgb(var(--brand-900) / 0.45) !important; }
+  select.input option:checked { background: rgb(var(--brand-100)) !important; }
+  .dark select.input option:checked { background: rgb(var(--brand-900) / 0.7) !important; color: #ffffff !important; }
+  select.input option::checkmark { color: rgb(var(--brand-600)); }
+  .dark select.input option::checkmark { color: rgb(var(--gold-300)); }
+}

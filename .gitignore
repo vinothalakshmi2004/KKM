@@ -1,0 +1,13 @@
+# Secrets: never commit
+**/.env
+**/.env.local
+docs/KEYS_PRIVATE.md
+
+# Dependencies / builds / local DB
+**/node_modules/
+frontend/build/
+backend/.mongo/
+
+# Downloaded docs (may contain filled-in keys)
+*.docx
+*.pdf

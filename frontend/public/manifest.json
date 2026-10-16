@@ -1,0 +1,12 @@
+{
+  "short_name": "KKM Hotel",
+  "name": "KKM Hotel",
+  "icons": [
+    { "src": "favicon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "favicon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0b1324",
+  "background_color": "#0b1324"
+}
