@@ -7,7 +7,9 @@ import rateLimit from 'express-rate-limit';
 import { corsOptions } from './config/cors.js';
 import { env, isProd } from './config/env.js';
 import { errorHandler, notFound } from './middlewares/error.js';
+import swaggerUi from 'swagger-ui-express';
 import apiRoutes from './routes/index.js';
+import { buildOpenApi } from './docs/openapi.js';
 
 export function createApp() {
   const app = express();
@@ -39,6 +41,36 @@ export function createApp() {
       message: { success: false, message: 'Too many requests, please slow down.' },
     })
   );
+
+  // API documentation + testing (Swagger UI), generated from the routes themselves
+  if (env.apiDocs) {
+    const spec = buildOpenApi(apiRoutes);
+    app.get('/api/docs.json', (_req, res) => res.json(spec));
+    app.use(
+      '/api/docs',
+      swaggerUi.serve,
+      swaggerUi.setup(spec, {
+        customSiteTitle: 'KKM Hotels API',
+        swaggerOptions: {
+          persistAuthorization: true,
+          displayRequestDuration: true,
+          docExpansion: 'none',
+          filter: true,
+          tryItOutEnabled: true,
+          // After a successful login in Swagger, use the token for every locked endpoint
+          responseInterceptor: function applyLoginToken(res) {
+            try {
+              if (res.ok && /\/api\/auth\/login$/.test(res.url)) {
+                const body = res.body && typeof res.body === 'object' ? res.body : JSON.parse(res.text);
+                if (body && body.data && body.data.token) window.ui.preauthorizeApiKey('bearerAuth', body.data.token);
+              }
+            } catch (e) { /* not JSON */ }
+            return res;
+          },
+        },
+      })
+    );
+  }
 
   app.use('/api', apiRoutes);
 

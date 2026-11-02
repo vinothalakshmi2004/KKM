@@ -117,6 +117,17 @@ npm start              # → http://localhost:3000
 
 **Port already in use?** Something old is still running. Close the old terminal, or ask for the process on that port to be stopped (ports used: 3000 frontend, 5000 backend).
 
+### 4.1 API documentation and testing (Swagger)
+
+Open **http://localhost:5000/api/docs** (online: `https://<backend>/api/docs`). Every endpoint (87) is listed by section with its parameters and request body, generated from the code, so it is always up to date.
+
+1. **Auth → POST /api/auth/login** → **Try it out** → enter the admin email and password → **Execute**. The token is applied automatically.
+2. **Hotels → GET /api/hotels** → copy a `hotelId`.
+3. Open any endpoint → **Try it out** → fill the fields → **Execute** to see the real answer.
+
+For Postman: **Import → Link** → `http://localhost:5000/api/docs.json`.
+`API_DOCS=false` in `backend/.env` hides the docs page.
+
 ---
 
 ## 5. Settings and keys — where they are and how to change them
@@ -142,6 +153,7 @@ After changing **backend/.env** the backend restarts itself (`npm run dev`). Aft
 | `ONLINE_MAX_ACTIVE_PER_PHONE` | no | Upcoming online bookings allowed per phone number | `3` | — |
 | `TRUST_PROXY` | online | How many proxies sit in front of the backend (for correct visitor IPs / rate limits) | `1` on Render/Railway/Nginx (default) · `false` on a bare server | — |
 | `NODE_ENV` | online | `production` hides technical error details | `production` | — |
+| `API_DOCS` | no | Swagger docs page at `/api/docs` | `true` (default) · `false` hides it | — |
 | `DNS_SERVERS` | rarely | Only if the backend can't find Atlas (`querySrv ECONNREFUSED`) | `8.8.8.8,1.1.1.1` | The app already does this automatically on this PC |
 
 ### 5.2 `frontend/.env`

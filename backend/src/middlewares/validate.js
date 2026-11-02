@@ -17,23 +17,28 @@ const dropUndefined = (value) =>
     ? Object.fromEntries(Object.entries(value).filter(([, v]) => v !== undefined))
     : value;
 
-export const validate = (schemas) => (req, _res, next) => {
-  try {
-    for (const part of ['params', 'query', 'body']) {
-      if (!schemas[part]) continue;
-      const parsed = dropUndefined(schemas[part].parse(req[part] ?? {}));
-      if (part === 'query') {
-        // Express 4 exposes req.query as a plain writable object
-        Object.defineProperty(req, 'query', { value: parsed, writable: true, configurable: true });
-      } else {
-        req[part] = parsed;
+export const validate = (schemas) => {
+  const middleware = (req, _res, next) => {
+    try {
+      for (const part of ['params', 'query', 'body']) {
+        if (!schemas[part]) continue;
+        const parsed = dropUndefined(schemas[part].parse(req[part] ?? {}));
+        if (part === 'query') {
+          // Express 4 exposes req.query as a plain writable object
+          Object.defineProperty(req, 'query', { value: parsed, writable: true, configurable: true });
+        } else {
+          req[part] = parsed;
+        }
       }
+      next();
+    } catch (err) {
+      if (err instanceof ZodError) return next(ApiError.badRequest('Validation failed', formatZodErrors(err)));
+      next(err);
     }
-    next();
-  } catch (err) {
-    if (err instanceof ZodError) return next(ApiError.badRequest('Validation failed', formatZodErrors(err)));
-    next(err);
-  }
+  };
+  // Read by the Swagger generator (src/docs/openapi.js) so the API docs always match the validation
+  middleware.schemas = schemas;
+  return middleware;
 };
 
 /**

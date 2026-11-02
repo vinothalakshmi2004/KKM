@@ -70,6 +70,8 @@ export const env = {
     keySecret: process.env.RAZORPAY_KEY_SECRET?.trim() || '',
   },
   onlineMaxActivePerPhone: toInt(process.env.ONLINE_MAX_ACTIVE_PER_PHONE, 3),
+  // Swagger UI at /api/docs (API_DOCS=false turns it off)
+  apiDocs: !/^(false|0|no|off)$/i.test(process.env.API_DOCS?.trim() || ''),
 };
 
 export const isProd = env.nodeEnv === 'production';

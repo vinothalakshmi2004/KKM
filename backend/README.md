@@ -41,6 +41,10 @@ Generate a JWT secret:
 node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
 ```
 
+## API docs (Swagger)
+
+Interactive docs for every endpoint at **`/api/docs`** (e.g. http://localhost:5000/api/docs); the OpenAPI JSON is at `/api/docs.json` (import into Postman). The spec is generated from the routes and their zod schemas (`src/docs/openapi.js`), with titles and examples in `src/docs/meta.js` — a new route appears automatically; add its title in `meta.js`. Log in with **POST /api/auth/login → Try it out**; the token is applied to every locked endpoint. Set `API_DOCS=false` to hide the page.
+
 ## Run
 
 ```bash
