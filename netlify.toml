@@ -1,0 +1,19 @@
+# Netlify settings for the KKM website + admin portal (frontend/).
+# Netlify reads this automatically when the site is imported from GitHub.
+
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = "build"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Backend on Render (public addresses, not secrets: the browser uses them)
+  REACT_APP_API_URL = "https://kkm-adel.onrender.com/api"
+  REACT_APP_SOCKET_URL = "https://kkm-adel.onrender.com"
+
+# Every page (e.g. /admin/bookings) opens the React app
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
